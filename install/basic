@@ -22,11 +22,34 @@ emacs
 )
 
 #------------------------------------------------------------------------------
+# Operation - bashrc.
+#------------------------------------------------------------------------------
+function modify_bashrc
+{
+    bashrc=$HOME/.bashrc
+    id='User Customization by Hub'
+    done=`cat $bashrc | grep "$id"`
+    if [ ${#done} == 0 ]; then
+        content="\n\n# $id.\n. $hub_dir/config/bashrc\n\n"
+        printf "$content" >> $bashrc
+    fi
+    . $bashrc
+}
+
+#------------------------------------------------------------------------------
+# Operation - config.
+#------------------------------------------------------------------------------
+function modify_config
+{
+    ln -sf $hub_dir/config/gitconfig $HOME/.gitconfig
+    chown -h $SUDO_USER:$SUDO_USER $HOME/.gitconfig
+}
+
+#------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
 print_message "$message"
 aptget ${packages[@]}
+modify_bashrc
+modify_config
 
-rm $HOME/.gitconfig
-ln -s $hub_dir/config/gitconfig $HOME/.gitconfig
-chown clement:clement $HOME/.gitconfig
