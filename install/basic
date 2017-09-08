@@ -10,6 +10,8 @@
 message="Install Basic Ubuntu packages"
 data_dir=$HOME/Desktop/data
 hub_dir=$data_dir/hub
+username='Clement Wong'
+email=sevenpi.883@gmail.com
 
 #------------------------------------------------------------------------------
 # Packages.
@@ -41,8 +43,12 @@ function modify_bashrc
 #------------------------------------------------------------------------------
 function modify_config
 {
+    touch $hub_dir/config/gitconfig
     ln -sf $hub_dir/config/gitconfig $HOME/.gitconfig
     chown -h $SUDO_USER:$SUDO_USER $HOME/.gitconfig
+    git config --global user.name "$username"
+    git config --global user.email $email
+    git config --global push.default simple
 }
 
 #------------------------------------------------------------------------------
