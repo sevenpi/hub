@@ -7,9 +7,9 @@
 #------------------------------------------------------------------------------
 # Configuration.
 #------------------------------------------------------------------------------
-message='Install Google Chrome'
 filename=google-chrome-stable_current_amd64.deb
 url=https://dl.google.com/linux/direct/$filename
+message='Install Google Chrome'
 
 #------------------------------------------------------------------------------
 # Pre-requisite Packages.
