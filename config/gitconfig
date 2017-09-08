@@ -2,3 +2,5 @@
 	name = Clement Wong
 	email = sevenpi.883@gmail.com
 
+[push]
+	default = simple
