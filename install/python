@@ -76,3 +76,9 @@ gspread
 pip3 install --upgrade pip
 pip3 install $pip_conf ${packages[@]}
 
+#------------------------------------------------------------------------------
+# Configure Jupyter.
+#------------------------------------------------------------------------------
+jupyter_dir=/home/$SUDO_USER/.local/share/jupyter
+chown -R -h $SUDO_USER:$SUDO_USER $jupyter_dir
+

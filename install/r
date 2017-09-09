@@ -80,7 +80,7 @@ IRkernel/IRkernel
 )
 
 #------------------------------------------------------------------------------
-# Functionalities.
+# Functionality.
 #------------------------------------------------------------------------------
 function install_r_packages()
 {
@@ -91,16 +91,10 @@ function install_r_packages()
 
 function configure_jupyter()
 {
-    #packages=`quote_comma "${rgithubpackages[@]}"`
-    #R -e "devtools::install_github( $packages )"
-    #R -e "IRkernel::installspec( user=F )"
+    packages=`quote_comma "${rgithubpackages[@]}"`
+    R -e "devtools::install_github( $packages )"
+    R -e "IRkernel::installspec( user=F )"
     jupyter kernelspec list
-
-    # The following has the effect of user=F in installspec().
-    #name=ir
-    #kernel_spec_src=/home/$SUDO_USER/.local/share/jupyter/kernels/$name
-    #kernel_spec_dest=/usr/local/share/jupyter/kernels/$name
-    #mv $kernel_spec_src $kernel_spec_dest    
 }
 
 #------------------------------------------------------------------------------
