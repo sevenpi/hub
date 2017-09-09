@@ -35,7 +35,11 @@ function gca() { git commit -a -m "$1"; }
 
 #------------------------------------------------------------------------------
 # Filesystem.
+#
+# Samba and rsync
+# https://www.samba.org/ftp/rsync/rsync.html
 #------------------------------------------------------------------------------
+alias cp='rsync -avzh --progress'
 pig_junk='pig_*.log *.pig.expanded *.pig.substituted'
 alias rmjunk="rm -f .DS_Store *~ .*~ $pig_junk"
 alias tree='tree -aC'
