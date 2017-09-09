@@ -1,66 +1,36 @@
 #!/bin/bash  
 
 #------------------------------------------------------------------------------
-#
-# Configure the complete system in Ubuntu after fresh installation.
-# Expects to run as Superuser.
-#
+# R.
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # Configuration.
 #------------------------------------------------------------------------------
-hub_dir="$HOME/Desktop/data/hub"
-install_dir="$hub_dir/install"
+message='Install R'
+print_message "$message"
 
 #------------------------------------------------------------------------------
-# Basic Utility.
+# Apt-get packages.
 #------------------------------------------------------------------------------
-function print_message
-{
-    printf "\n"
-    printf "%0.s-" {1..80}
-    printf "\n-- $1\n"
-    printf "%0.s-" {1..80}
-    printf "\n"
-}
+packages=(
 
-function aptget
-{
-    apt-get -f install -y "$@"
-}
+r-base-core
+r-base
+r-base-dev
+python-rpy2
+python3-rpy2
+
+)
 
 #------------------------------------------------------------------------------
-# Sequence of operation.
+# R packages.
 #------------------------------------------------------------------------------
-operations=(
-
-#update
-#nvidia
-#chrome
-#git
-basic
-#python
-r
-
+rpackages=(
 )
 
 #------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
-
-# Change directory.
-wd=$PWD
-clear
-cd /tmp
-
-# Perform installation modules.
-for o in ${operations[@]}
-do
-    . $install_dir/$o
-done
-
-# Clean up.
-printf '\n'
-cd $wd
+aptget ${packages[@]}
 
