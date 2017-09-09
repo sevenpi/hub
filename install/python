@@ -45,6 +45,7 @@ python3-yaml
 python3-dateutil
 python3-pandas
 python3-scipy
+python3-oauth2client
 
 )
 aptget ${packages[@]}
@@ -69,6 +70,7 @@ packages=(
 pytz==2013b
 jupyter
 swigibpy
+gspread
 
 )
 pip3 install --upgrade pip

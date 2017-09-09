@@ -17,6 +17,8 @@ hub_dir=$data_dir/hub
 packages=(
 
 emacs
+curl
+openssl
 
 )
 

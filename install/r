@@ -5,32 +5,108 @@
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
+# Utility.
+#------------------------------------------------------------------------------
+function joinby()
+{ 
+    local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}";
+}
+
+function quote_comma()
+{
+    echo "'`joinby "','" "${@}"`'"
+}
+
+#------------------------------------------------------------------------------
 # Configuration.
 #------------------------------------------------------------------------------
 message='Install R'
 print_message "$message"
 
 #------------------------------------------------------------------------------
-# Apt-get packages.
+# Apt-get package.
 #------------------------------------------------------------------------------
 packages=(
+
+libssl-dev
+libcairo2-dev
+libcurl4-openssl-dev
+libxml2-dev
 
 r-base-core
 r-base
 r-base-dev
+
 python-rpy2
 python3-rpy2
 
 )
 
 #------------------------------------------------------------------------------
-# R packages.
+# R package.
 #------------------------------------------------------------------------------
 rpackages=(
+
+devtools
+TTR
+ggplot2
+zoo
+mgcv
+bit64
+yaml
+lubridate
+stringr
+xlsx
+data.table
+rmarkdown
+RJDBC
+shiny
+shinyjs
+shinydashboard
+shinythemes
+dygraphs
+plotly
+dtplyr
+sparkline
+DT
+rbokeh
+seasonal
+
 )
+rgithubpackages=(
+
+IRkernel/IRkernel
+
+)
+
+#------------------------------------------------------------------------------
+# Functionalities.
+#------------------------------------------------------------------------------
+function install_r_packages()
+{
+    repos='http://cran.rstudio.com'
+    packages=`quote_comma "${rpackages[@]}"`
+    R --slave -e "install.packages( c( $packages ), dep=T, repos='$repos' )"
+}
+
+function configure_jupyter()
+{
+    #packages=`quote_comma "${rgithubpackages[@]}"`
+    #R -e "devtools::install_github( $packages )"
+    #R -e "IRkernel::installspec( user=F )"
+    jupyter kernelspec list
+
+    # The following has the effect of user=F in installspec().
+    #name=ir
+    #kernel_spec_src=/home/$SUDO_USER/.local/share/jupyter/kernels/$name
+    #kernel_spec_dest=/usr/local/share/jupyter/kernels/$name
+    #mv $kernel_spec_src $kernel_spec_dest    
+}
 
 #------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
 aptget ${packages[@]}
+install_r_packages
+configure_jupyter
 
