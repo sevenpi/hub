@@ -1,6 +1,19 @@
 #!/bin/bash
 
 #------------------------------------------------------------------------------
+# ANSI color codes.
+# https://help.ubuntu.com/community/CustomizingBashPrompt
+#------------------------------------------------------------------------------
+CRS='\[\033[00m\]'
+CBL='\[\033[01;34m\]'
+
+#------------------------------------------------------------------------------
+# System.
+#------------------------------------------------------------------------------
+PS1="$CBL\w$CRS\$ "
+set -o emacs
+
+#------------------------------------------------------------------------------
 # SSH.
 #------------------------------------------------------------------------------
 ssh_key=~/.ssh/id_rsa
@@ -21,7 +34,27 @@ function gc() { git commit -m "$1"; }
 function gca() { git commit -a -m "$1"; }
 
 #------------------------------------------------------------------------------
+# Filesystem.
+#------------------------------------------------------------------------------
+pig_junk='pig_*.log *.pig.expanded *.pig.substituted'
+alias rmjunk="rm -f .DS_Store *~ .*~ $pig_junk"
+alias tree='tree -aC'
+alias rmr='rm -fr'
+alias duh='du -h'
+alias diskspace='df --total -hl'
+function diskusage()
+{
+    lines=${2:-30}
+    du ${1:-.}/* | sort -nr | cut -f2- | xargs du -hs | head -n$lines
+}
+function private() { chmod -R go-rwx ${1:-.}; }  # Make dir inaccessible.
+function lookfor() { grep -rnw . -e ".*$1.*"; }  # Look for string pattern.
+function cg() { cat $2 | grep --color -n $1; }   # cat and grep.
+function cdf() { cd $1 && ll; }                  # cd and ll.
+function cdb() { cd .. && ll; }                  # cd.. and ll.
+
+#------------------------------------------------------------------------------
 # Path.
 #------------------------------------------------------------------------------
-export PATH=$HOME/Desktop/data/hub/bin:$PATH
-
+export PATH=~/Desktop/data/hub/bin:$PATH
+cd ~/Desktop/data
