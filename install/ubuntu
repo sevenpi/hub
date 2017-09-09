@@ -38,8 +38,9 @@ operations=(
 #update
 #nvidia
 #chrome
-git
+#git
 basic
+#python
 
 )
 
