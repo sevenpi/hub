@@ -26,3 +26,21 @@ You can change the URL with:
 
 git remote set-url origin git+ssh://git@github.com/username/reponame.git
 ```
+
+## Config Jupyter - Do this before install jupyter
+```text
+jupyter notebook --generate-config
+```
+```python3
+from notebook.auth import passwd
+passwd()
+```
+- Copy the password starting 'sha1:...' in jupyter_notebook_config.py
+- c.NotebookApp.password = 'sha1:...'
+- c.NotebookApp.certfile = 
+- c.NotebookApp.keyfile = 
+```bash
+crontab -r
+crontab ~/Desktop/data/hub/crontab/cronjobs
+crontab -l
+```
