@@ -7,16 +7,12 @@
 #------------------------------------------------------------------------------
 # Customization.
 #------------------------------------------------------------------------------
-path=$HOME/.gitconfig
-username='Clement Wong'
-email=sevenpi.883@gmail.com
-
-#------------------------------------------------------------------------------
-# Configuration.
-#------------------------------------------------------------------------------
-message="Install and Configure Git"
+config_path=$HOME/.gitconfig
 data_dir=$HOME/Desktop/data
 hub_dir=$data_dir/hub
+default_username='Clement Wong'
+default_email=sevenpi.883.@gmail.com
+message="Install and Configure Git"
 
 #------------------------------------------------------------------------------
 # Packages.
@@ -28,12 +24,46 @@ git
 )
 
 #------------------------------------------------------------------------------
+# Operation - Configure Git in ~/.gitconfig.
+#------------------------------------------------------------------------------
+function config_gitconfig
+{
+    # Set config path.
+    touch $config_path
+    chown -h $SUDO_USER:$SUDO_USER $config_path
+
+    # Collect information.
+    print_message "Configure Git"
+    read -p "User Name [$default_username]: " username
+    read -p "User Email [$default_email]: " email
+    if [[ ! "$username" ]]; then username="$default_username"; fi
+    if [ -z $email ]; then email=$default_email; fi
+
+    # Configure Git.
+    git config --global user.name "$username"
+    git config --global user.email $email
+    git config --global push.default simple
+}
+
+#------------------------------------------------------------------------------
+# Operation - Configure SSH.
+#------------------------------------------------------------------------------
+function config_ssh
+{
+    sshdir="/home/$SUDO_USER/.ssh"
+    keyfile="$sshdir/id_rsa"
+    rm -fr $sshdir
+    mkdir -p $sshdir
+    ssh-keygen -f $keyfile -t rsa -b 4096 -C $email
+    chown -R -h $SUDO_USER:$SUDO_USER $sshdir
+}
+
+#------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
 print_message "$message"
 aptget ${packages[@]}
-touch $path
-chown -h $SUDO_USER:$SUDO_USER $path
-git config --global user.name "$username"
-git config --global user.email $email
-git config --global push.default simple
+config_gitconfig
+config_ssh
+
+

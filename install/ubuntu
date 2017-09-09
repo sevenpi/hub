@@ -35,9 +35,10 @@ function aptget
 #------------------------------------------------------------------------------
 operations=(
 
-update
+#update
 #nvidia
 #chrome
+git
 basic
 
 )
@@ -45,12 +46,19 @@ basic
 #------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
+
+# Change directory.
 wd=$PWD
 clear
 cd /tmp
+
+# Perform installation modules.
 for o in ${operations[@]}
 do
     . $install_dir/$o
 done
+
+# Clean up.
 printf '\n'
 cd $wd
+

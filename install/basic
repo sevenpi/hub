@@ -5,12 +5,6 @@
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
-# Customization.
-#------------------------------------------------------------------------------
-username='Clement Wong'
-email=sevenpi.883@gmail.com
-
-#------------------------------------------------------------------------------
 # Configuration.
 #------------------------------------------------------------------------------
 message="Install Basic Ubuntu packages"
@@ -22,7 +16,6 @@ hub_dir=$data_dir/hub
 #------------------------------------------------------------------------------
 packages=(
 
-git
 emacs
 
 )
@@ -43,23 +36,9 @@ function modify_bashrc
 }
 
 #------------------------------------------------------------------------------
-# Operation - config.
-#------------------------------------------------------------------------------
-function modify_config
-{
-    touch $hub_dir/config/gitconfig
-    ln -sf $hub_dir/config/gitconfig $HOME/.gitconfig
-    chown -h $SUDO_USER:$SUDO_USER $HOME/.gitconfig
-    git config --global user.name "$username"
-    git config --global user.email $email
-    git config --global push.default simple
-}
-
-#------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
 print_message "$message"
 aptget ${packages[@]}
 modify_bashrc
-modify_config
 

@@ -1,1 +1,9 @@
+ssh_key=~/.ssh/id_rsa
+function init()
+{
+    eval "$(ssh-agent -s)"
+    ssh-add $ssh_key
+}
+
 export PATH=$HOME/Desktop/data/hub/bin:$PATH
+
