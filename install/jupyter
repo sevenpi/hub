@@ -1,0 +1,97 @@
+#!/bin/bash  
+
+#------------------------------------------------------------------------------
+# Jupyter.
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Customization.
+#------------------------------------------------------------------------------
+userhome=/home/$SUDO_USER
+config_name=jupyter_notebook_config.py
+jupyter_dir=$userhome/.local/share/jupyter
+data_dir=$userhome/Desktop/data
+local_dir=$data_dir/local
+hub_dir=$data_dir/hub
+password=sha1:3717f437ac86:f3518cf17844a5c14119ec6f4d6f49dca899c6db
+message="Install & Configure Jupyter for Python & R"
+
+#------------------------------------------------------------------------------
+# Jupyter config file.
+#------------------------------------------------------------------------------
+auth_dir=$local_dir/auth
+config_content="
+c.NotebookApp.certfile = '$auth_dir/cert.pem'
+c.NotebookApp.keyfile = '$auth_dir/cert.key'
+c.NotebookApp.notebook_dir = '$hub_dir'
+c.NotebookApp.password = '$password'
+c.NotebookApp.port = 8838
+c.NotebookApp.open_browser = False
+"
+
+#------------------------------------------------------------------------------
+# Operation - Install Jupyter.
+#------------------------------------------------------------------------------
+function install_jupyter()
+{
+    config_srcpath=$local_dir/$config_name
+    config_path=~/.jupyter/$config_name
+    
+    pipinstall 2 jupyter
+    pipinstall 3 jupyter
+    rm $config_path
+    echo "$config_content" > $config_srcpath
+    ln -s $config_srcpath $config_path
+    transfer_access $jupyter_dir
+    transfer_access $config_srcpath
+}
+
+#------------------------------------------------------------------------------
+# Operation - Configure R in Jupyter.
+#------------------------------------------------------------------------------
+function configure_r_in_jupyter()
+{
+    R --slave -e "IRkernel::installspec( user=F )"
+    jupyter kernelspec list
+}
+
+#------------------------------------------------------------------------------
+# Service file.
+#------------------------------------------------------------------------------
+service_name=run-jupyter
+service_script=$data_dir/hub/crontab/$service_name
+service_content="
+[Unit]
+After=network.target
+Description=Run Jupyter server on startup
+
+[Service]
+ExecStart=$service_script
+User=$SUDO_USER
+
+[Install]
+WantedBy=default.target
+"
+
+#------------------------------------------------------------------------------
+# Operation - Auto run Jupyter on startup.
+#------------------------------------------------------------------------------
+function start_service()
+{
+    service_path=$local_dir/$service_name.service
+    echo "$service_content" > $service_path
+    chmod 664 $service_path
+    chown -h $SUDO_USER:$SUDO_USER $service_path
+    systemctl daemon-reload
+    systemctl enable $service_path
+}
+
+#------------------------------------------------------------------------------
+# Operation.
+#------------------------------------------------------------------------------
+print_message "$message"
+install_jupyter
+configure_r_in_jupyter
+start_service
+
+

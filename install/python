@@ -8,12 +8,21 @@
 # Configuration.
 #------------------------------------------------------------------------------
 message='Install Python 2 and 3'
-pip_conf='--upgrade --force-reinstall --ignore-installed'
+pip_conf=''
 #pip_conf='--upgrade'
+#pip_conf='--upgrade --force-reinstall --ignore-installed'
 print_message "$message"
 
 #------------------------------------------------------------------------------
-# Python.
+# Utility.
+#------------------------------------------------------------------------------
+function pipinstall()
+{
+    pip$1 install $pip_conf "${@:2}"
+}
+
+#------------------------------------------------------------------------------
+# Packages.
 #------------------------------------------------------------------------------
 packages=(
 
@@ -21,14 +30,7 @@ python-setuptools
 python-pip
 python-wheel
 python-numpydoc
-
-)
-aptget ${packages[@]}
-
-#------------------------------------------------------------------------------
-# Python.
-#------------------------------------------------------------------------------
-packages=(
+python-seaborn
 
 python3
 python3-dev
@@ -46,39 +48,36 @@ python3-dateutil
 python3-pandas
 python3-scipy
 python3-oauth2client
+python3-seaborn
 
 )
-aptget ${packages[@]}
 
-#------------------------------------------------------------------------------
-# Pip.
-#------------------------------------------------------------------------------
-packages=(
+pip2packages=(
 
+pydataset
 pytz==2013b
-jupyter
+statsmodels
 
 )
-pip install --upgrade pip
-pip install $pip_conf ${packages[@]}
 
-#------------------------------------------------------------------------------
-# Pip3.
-#------------------------------------------------------------------------------
-packages=(
+pip3packages=(
 
+pydataset
 pytz==2013b
-jupyter
 swigibpy
 gspread
+statsmodels
 
 )
-pip3 install --upgrade pip
-pip3 install $pip_conf ${packages[@]}
 
 #------------------------------------------------------------------------------
-# Configure Jupyter.
+# Operation.
 #------------------------------------------------------------------------------
-jupyter_dir=/home/$SUDO_USER/.local/share/jupyter
-chown -R -h $SUDO_USER:$SUDO_USER $jupyter_dir
+aptget ${packages[@]}
+
+pip install --upgrade pip
+pipinstall 2 ${pip2packages[@]}
+
+pip3 install --upgrade pip
+pipinstall 3 ${pip3packages[@]}
 

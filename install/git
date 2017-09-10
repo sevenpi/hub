@@ -20,6 +20,7 @@ message="Install and Configure Git"
 packages=(
 
 git
+gitk
 
 )
 
@@ -30,7 +31,7 @@ function config_gitconfig
 {
     # Set config path.
     touch $config_path
-    chown -h $SUDO_USER:$SUDO_USER $config_path
+    transfer_access $config_path
 
     # Collect information.
     print_message "Configure Git"
@@ -55,7 +56,7 @@ function config_ssh
     rm -fr $sshdir
     mkdir -p $sshdir
     ssh-keygen -f $keyfile -t rsa -b 4096 -C $email
-    chown -R -h $SUDO_USER:$SUDO_USER $sshdir
+    transfer_access $sshdir
 }
 
 #------------------------------------------------------------------------------

@@ -40,6 +40,18 @@ r-base-dev
 python-rpy2
 python3-rpy2
 
+# For Cairo
+# https://stackoverflow.com/questions/23642353/error-message-installing-cairo-package-in-r
+libxt-dev
+# Note:
+#   Designed to commented out,
+#   System may not require the following dependencies:
+#libgtk2.0-dev
+#libcairo2-dev
+#xvfb
+#xauth
+#xfonts-base
+
 )
 
 #------------------------------------------------------------------------------
@@ -84,16 +96,19 @@ IRkernel/IRkernel
 #------------------------------------------------------------------------------
 function install_r_packages()
 {
+    # Via R native.
     repos='http://cran.rstudio.com'
     packages=`quote_comma "${rpackages[@]}"`
     R --slave -e "install.packages( c( $packages ), dep=T, repos='$repos' )"
+
+    # Via GitHub.
+    packages=`quote_comma "${rgithubpackages[@]}"`
+    R --slave -e "devtools::install_github( $packages )"
 }
 
 function configure_jupyter()
 {
-    packages=`quote_comma "${rgithubpackages[@]}"`
-    R -e "devtools::install_github( $packages )"
-    R -e "IRkernel::installspec( user=F )"
+    R --slave -e "IRkernel::installspec( user=F )"
     jupyter kernelspec list
 }
 

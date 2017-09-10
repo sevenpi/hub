@@ -16,7 +16,7 @@ install_dir="$hub_dir/install"
 #------------------------------------------------------------------------------
 # Basic Utility.
 #------------------------------------------------------------------------------
-function print_message
+function print_message()
 {
     printf "\n"
     printf "%0.s-" {1..80}
@@ -25,9 +25,14 @@ function print_message
     printf "\n"
 }
 
-function aptget
+function aptget()
 {
     apt-get -f install -y "$@"
+}
+
+function transfer_access()
+{
+    chown -R -h $SUDO_USER:$SUDO_USER $1
 }
 
 #------------------------------------------------------------------------------
@@ -39,9 +44,10 @@ operations=(
 #nvidia
 #chrome
 #git
-basic
-#python
-r
+#basic
+python
+#r
+#jupyter
 
 )
 

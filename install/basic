@@ -10,15 +10,35 @@
 message="Install Basic Ubuntu packages"
 data_dir=$HOME/Desktop/data
 hub_dir=$data_dir/hub
+auth_dir=$data_dir/auth
 
 #------------------------------------------------------------------------------
 # Packages.
 #------------------------------------------------------------------------------
 packages=(
 
-emacs
 curl
 openssl
+
+fcitx-table-cangjie3
+fcitx-table-quick3
+fcitx-table-cantonhk
+
+dconf-tools
+compizconfig-settings-manager
+
+emacs
+emacs-goodies-el
+
+tree
+sqliteman
+md5deep
+rar
+unrar
+gksu
+vlc
+youtube-dl
+okular
 
 )
 
@@ -38,9 +58,24 @@ function modify_bashrc
 }
 
 #------------------------------------------------------------------------------
+# Operation - SSL key (used at least by Jupyter).
+#------------------------------------------------------------------------------
+function create_ssl_key
+{
+    path=$auth_dir/cert.pem
+    keypath=$auth_dir/cert.key
+    options='-newkey rsa:4096 -nodes -sha512 -x509 -days 3650 -nodes'
+    mkdir -p $auth_dir
+    openssl req $options -out $path -keyout $keypath
+    transfer_access $auth_dir
+    chmod go= $keypath
+}
+
+#------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
 print_message "$message"
 aptget ${packages[@]}
 modify_bashrc
+create_ssl_key
 
