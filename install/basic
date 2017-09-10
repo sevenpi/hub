@@ -11,6 +11,7 @@ message="Install Basic Ubuntu packages"
 data_dir=$HOME/Desktop/data
 hub_dir=$data_dir/hub
 auth_dir=$data_dir/auth
+userhome=/home/$SUDO_USER
 
 #------------------------------------------------------------------------------
 # Packages.
@@ -72,10 +73,27 @@ function create_ssl_key
 }
 
 #------------------------------------------------------------------------------
+# Operation - Dropbox.
+#------------------------------------------------------------------------------
+function install_dropbox
+{
+    # Install dropbox.
+    url=https://www.dropbox.com/download?plat=lnx.x86_64
+    cd $userhome && wget -O - $url | tar xzf -
+
+    # Finalize.
+    $userhome/.dropbox-dist/dropboxd &  # Run dropbox daemon.
+    ln -s $userhome/Dropbox $userhome/Desktop/dropbox  # Create a desktop link.
+    aptget nautilus-dropbox  # Install nautilus dropbox.
+}
+
+#------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
 print_message "$message"
 aptget ${packages[@]}
 modify_bashrc
 create_ssl_key
+install_dropbox
+
 

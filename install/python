@@ -9,8 +9,8 @@
 #------------------------------------------------------------------------------
 message='Install Python 2 and 3'
 pip_conf=''
-#pip_conf='--upgrade'
-#pip_conf='--upgrade --force-reinstall --ignore-installed'
+pip_conf='--upgrade'
+pip_conf='--upgrade --force-reinstall --ignore-installed'
 print_message "$message"
 
 #------------------------------------------------------------------------------
