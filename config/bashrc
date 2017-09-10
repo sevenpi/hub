@@ -62,3 +62,5 @@ function cdb() { cd .. && ll; }                  # cd.. and ll.
 #------------------------------------------------------------------------------
 export PATH=~/Desktop/data/hub/bin:$PATH
 cd ~/Desktop/data
+
+alias installnow='sudo ~/Desktop/data/hub/install/ubuntu'
