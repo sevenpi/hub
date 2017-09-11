@@ -12,7 +12,7 @@ url=https://dl.google.com/linux/direct/$filename
 message='Install Google Chrome'
 
 #------------------------------------------------------------------------------
-# Pre-requisite Packages.
+# Packages.
 #------------------------------------------------------------------------------
 packages=(
 
@@ -20,12 +20,12 @@ libindicator7
 libappindicator1
 
 )
-print_message "$message"
-aptget ${packages[@]}
 
 #------------------------------------------------------------------------------
 # Download and install.
 #------------------------------------------------------------------------------
+print_message "$message"
+aptget ${packages[@]}
 wget $url
 dpkg -i $filename
 rm -f $filename

@@ -44,7 +44,7 @@ okular
 )
 
 #------------------------------------------------------------------------------
-# Operation - bashrc.
+# Operation - ~/.bashrc.
 #------------------------------------------------------------------------------
 function modify_bashrc
 {
@@ -77,14 +77,15 @@ function create_ssl_key
 #------------------------------------------------------------------------------
 function install_dropbox
 {
-    # Install dropbox.
+    # Configuration.
+    packages=( nautilus-dropbox )
     url=https://www.dropbox.com/download?plat=lnx.x86_64
-    cd $userhome && wget -O - $url | tar xzf -
 
-    # Finalize.
-    $userhome/.dropbox-dist/dropboxd &  # Run dropbox daemon.
-    ln -s $userhome/Dropbox $userhome/Desktop/dropbox  # Create a desktop link.
-    aptget nautilus-dropbox  # Install nautilus dropbox.
+    # Operation.    
+    cd $userhome && wget -O - $url | tar xzf -         # Install dropbox.
+    $userhome/.dropbox-dist/dropboxd &                 # Run dropbox daemon.
+    ln -s $userhome/Dropbox $userhome/Desktop/dropbox  # Create desktop link.
+    aptget ${packages[@]}                              # Install nautilus one.
 }
 
 #------------------------------------------------------------------------------
