@@ -1,0 +1,54 @@
+#!/bin/bash  
+
+#------------------------------------------------------------------------------
+# Keras - Neural Network and Deep Learning in Python.
+#
+# Reference:
+# https://keras.io/#installation
+# https://www.tensorflow.org/install/install_linux
+#
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Customization.
+#------------------------------------------------------------------------------
+message="Install Keras Library in Python"
+
+#------------------------------------------------------------------------------
+# Packages.
+#------------------------------------------------------------------------------
+packages=(
+
+linux-headers-$(uname -r)
+nvidia-cuda-dev
+
+)
+
+pippackages=(
+
+keras
+ipywidgets
+keras-tqdm
+
+)
+
+#------------------------------------------------------------------------------
+# Operation - Verification.
+#------------------------------------------------------------------------------
+function verify()
+{
+    lspci | grep -i nvidia           # Check if GPU is CUDA-capable.
+    uname -m && cat /etc/*release    # Supported version of Linux.
+    gcc --version                    # Check if GCC is installed.
+    uname -r                         # Version of the kernel.
+}
+
+#------------------------------------------------------------------------------
+# Operation.
+#------------------------------------------------------------------------------
+verify
+aptget ${packages[@]}
+pipinstall 2 ${pippackages[@]}
+pipinstall 3 ${pippackages[@]}
+
+

@@ -1,0 +1,81 @@
+#!/bin/bash  
+
+#------------------------------------------------------------------------------
+# LightGBM by Microsoft.
+#
+# Reference:
+# https://github.com/Microsoft/LightGBM/blob/master/docs/GPU-Tutorial.md
+# https://github.com/Microsoft/LightGBM/wiki/Installation-Guide
+#
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Customization.
+#------------------------------------------------------------------------------
+version=375
+message="Install LightGBM by Microsoft"
+url=https://github.com/Microsoft/LightGBM
+
+#------------------------------------------------------------------------------
+# Packages.
+#------------------------------------------------------------------------------
+packages=(
+
+nvidia-$version
+nvidia-opencl-icd-$version
+nvidia-opencl-dev
+opencl-headers
+clinfo
+#
+# Generic OpenCL (for AMD GPU).
+#
+#ocl-icd-libopencl1
+#ocl-icd-opencl-dev
+
+libboost-dev             # Boost.Compute.
+libboost-system-dev
+libboost-filesystem-dev
+cmake                    # CMake 3.2 or later.
+
+)
+
+pippackages=(
+
+scikit-learn
+pandas
+matplotlib
+
+)
+
+#------------------------------------------------------------------------------
+# Operation - Download and install LightGBM.
+#------------------------------------------------------------------------------
+function install_lightgbm()
+{
+    git clone --recursive $url
+    cd LightGBM
+    mkdir build ; cd build
+    cmake -DUSE_GPU=1 .. 
+    make -j$(nproc)
+    cd ../python-package
+    python3 setup.py install --gpu
+    cd /tmp
+    rm -fr LightGBM
+}
+
+#------------------------------------------------------------------------------
+# Operation.
+#------------------------------------------------------------------------------
+apt-get -f install -y --no-install-recommends "${packages[@]}"
+#
+# Comment out not to restart for now.
+#
+#init 6
+#sleep 30s
+# 
+# Install and autoremove ocl-icd-libopencl1 and ocl-icd-opencl-dev if needed.
+#
+pipinstall 2 ${pippackages[@]}
+pipinstall 3 ${pippackages[@]}
+install_lightgbm
+

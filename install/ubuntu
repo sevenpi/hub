@@ -44,10 +44,15 @@ operations=(
 #nvidia
 #chrome
 #git
-basic
+#basic
 #python
 #r
 #jupyter
+#samba       # Requires personal configuration before installation.
+tensorflow  # Requires pre-requisite manual download.
+#keras
+#lgb
+#xgb
 
 )
 

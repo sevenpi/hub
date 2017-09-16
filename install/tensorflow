@@ -1,0 +1,41 @@
+#!/bin/bash  
+
+#------------------------------------------------------------------------------
+# TensorFlow by Google.
+#
+# Reference:
+# http://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pre-installation-actions
+# https://developer.nvidia.com/cudnn
+# https://www.tensorflow.org/install/install_linux
+#
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Customization.
+#------------------------------------------------------------------------------
+dpkg='dpkg -i'
+message="Install TensorFlow"
+
+#------------------------------------------------------------------------------
+# Downloaded files.
+#------------------------------------------------------------------------------
+cuda=cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb
+cuda_dev=cuda-repo-ubuntu1604-8-0-local-cublas-performance-update_8.0.61-1_amd64.deb
+cudnn=libcudnn6_6.0.21-1+cuda8.0_amd64.deb
+cudnn_dev=libcudnn6-dev_6.0.21-1+cuda8.0_amd64.deb
+
+#------------------------------------------------------------------------------
+# Operation.
+#------------------------------------------------------------------------------
+print_message "$message"
+dpkg cuda
+apt-get update
+aptget cuda
+dpkg cuda_dev
+dpkg cudnn
+dpkg cudnn_dev
+aptget libcupti-dev
+pipinstall 2 tensorflow-gpu
+pipinstall 3 tensorflow-gpu
+
+

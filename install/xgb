@@ -1,0 +1,58 @@
+#!/bin/bash  
+
+#------------------------------------------------------------------------------
+# Xgboost - eXtreme Gradient Boosting.
+#
+# Reference:
+# http://xgboost.readthedocs.io/en/latest/python/python_intro.html
+# https://github.com/dmlc/xgboost/blob/master/doc/build.md
+#
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Customization.
+#------------------------------------------------------------------------------
+message="Install Xgboost"
+name=xgboost
+path=https://github.com/dmlc/$name
+
+#------------------------------------------------------------------------------
+# R package.
+#------------------------------------------------------------------------------
+rpackages=(
+
+xgboost
+
+)
+
+#------------------------------------------------------------------------------
+# Operation - Build XGB.
+#------------------------------------------------------------------------------
+function build()
+{
+    # Source.
+    git clone --recursive $path
+    cd $name
+    make -j4
+    mkdir build
+    cd build
+    cmake .. -DUSE_CUDA=ON
+    make -j
+
+    # Python package.
+    cd ../python-package
+    python3 setup.py install
+
+    # Clean up.
+    cd /tmp
+    rm -fr $name
+}
+
+#------------------------------------------------------------------------------
+# Operation.
+#------------------------------------------------------------------------------
+build
+install_r_package
+
+
+

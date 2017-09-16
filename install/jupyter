@@ -30,6 +30,15 @@ c.NotebookApp.open_browser = False
 "
 
 #------------------------------------------------------------------------------
+# Packages.
+#------------------------------------------------------------------------------
+packages=(
+
+jupyter
+
+)
+
+#------------------------------------------------------------------------------
 # Operation - Install Jupyter.
 #------------------------------------------------------------------------------
 function install_jupyter()
@@ -37,8 +46,8 @@ function install_jupyter()
     config_srcpath=$local_dir/$config_name
     config_path=~/.jupyter/$config_name
     
-    pipinstall 2 jupyter
-    pipinstall 3 jupyter
+    pipinstall 2 ${packages[@]}
+    pipinstall 3 ${packages[@]}
     rm $config_path
     echo "$config_content" > $config_srcpath
     ln -s $config_srcpath $config_path

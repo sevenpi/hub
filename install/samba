@@ -1,21 +1,24 @@
 #!/bin/bash  
 
 #------------------------------------------------------------------------------
-# Graphics Card Driver.
+# Samba.
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # Configuration.
 #------------------------------------------------------------------------------
-version=375
-repo=graphics-drivers/ppa
-message="Install Nvidia Driver (Version $version)"
+userhome=/home/$SUDO_USER
+filename=smb.conf
+src_path=$userhome/Desktop/data/local/$filename
+dest_path=/etc/samba/$filename
+message="Configure Samba"
 
 #------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
-print_message "$message"
-add-apt-repository -y ppa:$repo
-apt-get update
-aptget nvidia-$version
+smbpasswd -a $SUDO_USER
+mv -n $dest_path $dest_path.default
+rm $dest_path
+ln -s $src_path $dest_path
+service smbd restart
 

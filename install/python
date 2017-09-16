@@ -8,8 +8,6 @@
 # Configuration.
 #------------------------------------------------------------------------------
 message='Install Python 2 and 3'
-pip_conf=''
-pip_conf='--upgrade'
 pip_conf='--upgrade --force-reinstall --ignore-installed'
 print_message "$message"
 
@@ -57,6 +55,7 @@ pip2packages=(
 pydataset
 pytz==2013b
 statsmodels
+numexpr
 
 )
 
@@ -67,17 +66,23 @@ pytz==2013b
 swigibpy
 gspread
 statsmodels
+numexpr
 
 )
 
 #------------------------------------------------------------------------------
 # Operation.
 #------------------------------------------------------------------------------
-aptget ${packages[@]}
+function run()
+{
+    aptget ${packages[@]}
 
-pip install --upgrade pip
-pipinstall 2 ${pip2packages[@]}
+    pip install --upgrade pip
+    pipinstall 2 ${pip2packages[@]}
 
-pip3 install --upgrade pip
-pipinstall 3 ${pip3packages[@]}
+    pip3 install --upgrade pip
+    pipinstall 3 ${pip3packages[@]}
+}
+#run
+pip_conf=''
 
