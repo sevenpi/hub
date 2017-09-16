@@ -1,2 +1,3 @@
 #!/bin/bash
 jupyter notebook
+jupyter nbextension enable --py widgetsnbextension
